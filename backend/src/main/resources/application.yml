@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: personal-life-os-backend
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+jwt:
+  secret: ${JWT_SECRET:dev-only-secret-key-change-in-production-min-32-chars}
+  expiration-ms: 86400000  
+
+server:
+  port: 8080
