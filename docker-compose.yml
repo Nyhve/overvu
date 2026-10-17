@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:17
-    container_name: personal-life-os-postgres
+    container_name: overvu-postgres
     environment:
       POSTGRES_DB: personal_life_os
       POSTGRES_USER: personal_life_os
@@ -9,7 +9,38 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - personal-life-os-data:/var/lib/postgresql/data
+      - overvu-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U personal_life_os"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: overvu-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/personal_life_os
+      SPRING_DATASOURCE_USERNAME: personal_life_os
+      SPRING_DATASOURCE_PASSWORD: personal_life_os
+      SPRING_PROFILES_ACTIVE: prod
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: /api
+    container_name: overvu-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 
 volumes:
-  personal-life-os-data:
+  overvu-data:
