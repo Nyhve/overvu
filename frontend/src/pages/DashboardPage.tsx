@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
 import { goalApi } from "../api/goalApi";
 import { taskApi } from "../api/taskApi";
 import { ApiError } from "../api/client";
@@ -15,7 +14,6 @@ import { financeApi } from "../api/financeApi.ts";
 import type { MonthlyStats } from "../types/finance.ts";
 
 export default function DashboardPage() {
-  const { logout } = useAuth();
   const [goals, setGoals] = useState<Goal[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);

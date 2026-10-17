@@ -33,8 +33,6 @@ export default function FitnessPage() {
   const [setReps, setSetReps] = useState("");
   const [activeExerciseId, setActiveExerciseId] = useState<number | null>(null);
 
-  const today = new Date().toISOString().split("T")[0];
-
   useEffect(() => {
     Promise.all([fitnessApi.getWorkouts(), fitnessApi.getExercises()])
       .then(([w, e]) => {
