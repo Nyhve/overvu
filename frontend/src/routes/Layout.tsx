@@ -34,9 +34,6 @@ export function Layout() {
               <NavLink to="/finance" className={linkClass}>
                 Finanzen
               </NavLink>
-              <NavLink to="/analytics" className={linkClass}>
-                Analytics
-              </NavLink>
             </nav>
           </div>
           <button onClick={logout} className="text-sm text-ink-muted hover:text-ink underline">
