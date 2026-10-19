@@ -134,7 +134,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Kennzahlen */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="border border-border p-5">
               <p className="text-3xl font-semibold">{activeGoals.length}</p>
               <p className="text-sm text-ink-muted mt-1">Aktive Ziele</p>
@@ -170,7 +170,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Nächste Aufgaben + Aktive Ziele */}
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <section>
               <h2 className="text-sm font-medium text-ink-muted mb-3">Nächste Aufgaben</h2>
               {upcomingTasks.length === 0 ? (
