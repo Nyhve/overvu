@@ -12,4 +12,13 @@
 body {
   background-color: var(--color-background);
   color: var(--color-ink);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.dark {
+  --color-background: #1A1A18;
+  --color-surface: #242422;
+  --color-ink: #F0EDE8;
+  --color-ink-muted: #9B9690;
+  --color-border: #38362F;
 }

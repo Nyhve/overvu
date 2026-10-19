@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, Link, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.tsx";
+import { useDarkMode } from "../hooks/useDarkMode.ts";
 
 const NAV_LINKS = [
   { to: "/goals", label: "Ziele" },
@@ -14,6 +15,7 @@ const NAV_LINKS = [
 export function Layout() {
   const { logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isDark, toggle } = useDarkMode();
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -48,6 +50,13 @@ export function Layout() {
           </div>
 
           <div className="flex items-center gap-4">
+            <button
+              onClick={toggle}
+              className="hidden md:block text-sm text-ink-muted hover:text-ink"
+              aria-label="Dark Mode umschalten"
+            >
+              {isDark ? "☀️" : "🌙"}
+            </button>
             {/* Desktop Logout */}
             <button
               onClick={logout}
@@ -82,6 +91,12 @@ export function Layout() {
                 {link.label}
               </NavLink>
             ))}
+            <button
+              onClick={toggle}
+              className="block w-full text-left py-3 px-4 text-sm text-ink-muted hover:bg-surface border-b border-border"
+            >
+              {isDark ? "☀️ Hell" : "🌙 Dunkel"}
+            </button>
             <button
               onClick={() => { logout(); setMenuOpen(false); }}
               className="block w-full text-left py-3 px-4 text-sm text-ink-muted hover:bg-surface"
