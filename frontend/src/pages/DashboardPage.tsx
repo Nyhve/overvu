@@ -65,6 +65,15 @@ export default function DashboardPage() {
 
       {!isLoading && !error && (
         <>
+          <h1 className="text-2xl font-semibold mb-2">Deine Übersicht</h1>
+          <p className="text-sm text-ink-muted mb-8">
+            {new Date().toLocaleDateString("de-DE", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
           <div className="grid grid-cols-2 gap-4 mb-10">
             <div className="border border-border p-5">
               <p className="text-3xl font-semibold">{activeGoals.length}</p>

@@ -1,5 +1,5 @@
-import { NavLink, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { NavLink, Link, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.tsx";
 
 export function Layout() {
   const { logout } = useAuth();
@@ -12,11 +12,10 @@ export function Layout() {
       <header className="border-b border-border">
         <div className="max-w-3xl mx-auto px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <span className="font-semibold">OvervU</span>
+            <Link to="/" className="font-semibold hover:text-accent transition-colors">
+              OvervU
+            </Link>
             <nav className="flex gap-4 text-sm">
-              <NavLink to="/" end className={linkClass}>
-                Dashboard
-              </NavLink>
               <NavLink to="/goals" className={linkClass}>
                 Ziele
               </NavLink>
