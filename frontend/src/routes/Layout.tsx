@@ -1,21 +1,24 @@
 import { useState } from "react";
 import { NavLink, Link, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.tsx";
-import { useDarkMode } from "../hooks/useDarkMode.ts";
+import type { UserPreferences } from "../types/user.ts";
 
-const NAV_LINKS = [
-  { to: "/goals", label: "Ziele" },
-  { to: "/tasks", label: "Aufgaben" },
-  { to: "/habits", label: "Habits" },
-  { to: "/fitness", label: "Fitness" },
-  { to: "/learning", label: "Learning" },
-  { to: "/finance", label: "Finanzen" },
+const NAV_LINKS: { to: string; label: string; preferenceKey: keyof UserPreferences }[] = [
+  { to: "/goals", label: "Ziele", preferenceKey: "goalsEnabled" },
+  { to: "/tasks", label: "Aufgaben", preferenceKey: "tasksEnabled" },
+  { to: "/habits", label: "Habits", preferenceKey: "habitsEnabled" },
+  { to: "/fitness", label: "Fitness", preferenceKey: "fitnessEnabled" },
+  { to: "/learning", label: "Learning", preferenceKey: "learningEnabled" },
+  { to: "/finance", label: "Finanzen", preferenceKey: "financeEnabled" },
 ];
 
 export function Layout() {
-  const { logout } = useAuth();
+  const { logout, preferences } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isDark, toggle } = useDarkMode();
+
+  const visibleLinks = NAV_LINKS.filter(
+    (link) => !preferences || preferences[link.preferenceKey]
+  );
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -39,9 +42,8 @@ export function Layout() {
             >
               OvervU
             </Link>
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex gap-4 text-sm">
-              {NAV_LINKS.map((link) => (
+              {visibleLinks.map((link) => (
                 <NavLink key={link.to} to={link.to} className={linkClass}>
                   {link.label}
                 </NavLink>
@@ -49,39 +51,37 @@ export function Layout() {
             </nav>
           </div>
 
-          <div className="flex items-center gap-4">
-            <button
-              onClick={toggle}
-              className="hidden md:block text-sm text-ink-muted hover:text-ink"
-              aria-label="Dark Mode umschalten"
+          <div className="hidden md:flex items-center gap-4">
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                `text-sm ${isActive ? "text-accent font-medium" : "text-ink-muted hover:text-ink"}`
+              }
             >
-              {isDark ? "☀️" : "🌙"}
-            </button>
-            {/* Desktop Logout */}
+              Profil
+            </NavLink>
             <button
               onClick={logout}
-              className="hidden md:block text-sm text-ink-muted hover:text-ink underline"
+              className="text-sm text-ink-muted hover:text-ink underline"
             >
               Abmelden
             </button>
-
-            {/* Hamburger Button – nur auf Mobile */}
-            <button
-              onClick={() => setMenuOpen((prev) => !prev)}
-              className="md:hidden flex flex-col gap-1.5 p-2"
-              aria-label="Menü öffnen"
-            >
-              <span className={`block w-5 h-0.5 bg-ink transition-transform duration-200 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-              <span className={`block w-5 h-0.5 bg-ink transition-opacity duration-200 ${menuOpen ? "opacity-0" : ""}`} />
-              <span className={`block w-5 h-0.5 bg-ink transition-transform duration-200 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-            </button>
           </div>
+
+          <button
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className="md:hidden flex flex-col gap-1.5 p-2"
+            aria-label="Menü öffnen"
+          >
+            <span className={`block w-5 h-0.5 bg-ink transition-transform duration-200 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`block w-5 h-0.5 bg-ink transition-opacity duration-200 ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-5 h-0.5 bg-ink transition-transform duration-200 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+          </button>
         </div>
 
-        {/* Mobile Dropdown Menu */}
         {menuOpen && (
           <div className="md:hidden border-t border-border bg-surface">
-            {NAV_LINKS.map((link) => (
+            {visibleLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
@@ -91,12 +91,13 @@ export function Layout() {
                 {link.label}
               </NavLink>
             ))}
-            <button
-              onClick={toggle}
-              className="block w-full text-left py-3 px-4 text-sm text-ink-muted hover:bg-surface border-b border-border"
+            <NavLink
+              to="/profile"
+              className={mobileLinkClass}
+              onClick={() => setMenuOpen(false)}
             >
-              {isDark ? "☀️ Hell" : "🌙 Dunkel"}
-            </button>
+              Profil
+            </NavLink>
             <button
               onClick={() => { logout(); setMenuOpen(false); }}
               className="block w-full text-left py-3 px-4 text-sm text-ink-muted hover:bg-surface"

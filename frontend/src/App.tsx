@@ -10,6 +10,7 @@ import HabitsPage from "./pages/HabitsPage.tsx";
 import FitnessPage from "./pages/FitnessPage.tsx";
 import LearningPage from "./pages/LearningPage.tsx";
 import FinancePage from "./pages/FinancePage.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/fitness" element={<FitnessPage />} />
           <Route path="/learning" element={<LearningPage />} />
           <Route path="/finance" element={<FinancePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Route>
     </Routes>

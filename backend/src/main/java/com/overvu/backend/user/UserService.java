@@ -13,10 +13,13 @@ public class UserService {
 
     private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    private final UserPreferencesRepository preferencesRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, UserPreferencesRepository preferencesRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.preferencesRepository = preferencesRepository;
     }
 
     public LoginResponse login(LoginRequest request) {
@@ -44,5 +47,36 @@ public class UserService {
         User user = new User(request.email(), hashedPassword);
         User savedUser = userRepository.save(user);
         return UserResponse.fromEntity(savedUser);
+    }
+
+    public UserPreferencesResponse getPreferences() {
+        Long userId = getCurrentUserId();
+        UserPreferences prefs = preferencesRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    User user = userRepository.getReferenceById(userId);
+                    return preferencesRepository.save(new UserPreferences(user));
+                });
+        return UserPreferencesResponse.fromEntity(prefs);
+    }
+
+    public UserPreferencesResponse updatePreferences(UpdateUserPreferencesRequest request) {
+        Long userId = getCurrentUserId();
+        UserPreferences prefs = preferencesRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    User user = userRepository.getReferenceById(userId);
+                    return new UserPreferences(user);
+                });
+        prefs.setGoalsEnabled(request.goalsEnabled());
+        prefs.setTasksEnabled(request.tasksEnabled());
+        prefs.setHabitsEnabled(request.habitsEnabled());
+        prefs.setFitnessEnabled(request.fitnessEnabled());
+        prefs.setLearningEnabled(request.learningEnabled());
+        prefs.setFinanceEnabled(request.financeEnabled());
+        return UserPreferencesResponse.fromEntity(preferencesRepository.save(prefs));
+    }
+
+    private Long getCurrentUserId() {
+        return (Long) org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
     }
 }
