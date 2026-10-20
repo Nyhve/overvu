@@ -15,9 +15,9 @@ jobs:
       postgres:
         image: postgres:17
         env:
-          POSTGRES_DB: personal_life_os
-          POSTGRES_USER: personal_life_os
-          POSTGRES_PASSWORD: personal_life_os
+          POSTGRES_DB: overvu
+          POSTGRES_USER: overvu
+          POSTGRES_PASSWORD: overvu
         ports:
           - 5432:5432
         options: >-
@@ -46,9 +46,9 @@ jobs:
       - name: Run backend tests
         working-directory: backend
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/personal_life_os
-          SPRING_DATASOURCE_USERNAME: personal_life_os
-          SPRING_DATASOURCE_PASSWORD: personal_life_os
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/overvu
+          SPRING_DATASOURCE_USERNAME: overvu
+          SPRING_DATASOURCE_PASSWORD: overvu
           SPRING_PROFILES_ACTIVE: dev
           JWT_SECRET: ci-test-secret-key-at-least-32-characters-long
         run: ./mvnw test

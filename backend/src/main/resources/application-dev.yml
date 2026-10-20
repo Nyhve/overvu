@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/personal_life_os
-    username: personal_life_os
-    password: personal_life_os
+    url: jdbc:postgresql://localhost:5432/overvu
+    username: overvu
+    password: overvu
 
 logging:
   level:

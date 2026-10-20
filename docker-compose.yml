@@ -3,15 +3,15 @@ services:
     image: postgres:17
     container_name: overvu-postgres
     environment:
-      POSTGRES_DB: personal_life_os
-      POSTGRES_USER: personal_life_os
-      POSTGRES_PASSWORD: personal_life_os
+      POSTGRES_DB: overvu
+      POSTGRES_USER: overvu
+      POSTGRES_PASSWORD: overvu
     ports:
       - "5432:5432"
     volumes:
       - overvu-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U personal_life_os"]
+      test: ["CMD-SHELL", "pg_isready -U overvu"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -20,9 +20,9 @@ services:
     build: ./backend
     container_name: overvu-backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/personal_life_os
-      SPRING_DATASOURCE_USERNAME: personal_life_os
-      SPRING_DATASOURCE_PASSWORD: personal_life_os
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/overvu
+      SPRING_DATASOURCE_USERNAME: overvu
+      SPRING_DATASOURCE_PASSWORD: overvu
       SPRING_PROFILES_ACTIVE: prod
       JWT_SECRET: ${JWT_SECRET}
     ports:
