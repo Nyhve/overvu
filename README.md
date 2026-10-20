@@ -1,6 +1,7 @@
 # OvervU
 
 Persönliches Life-Management-Tool zur Übersicht über alle Lebensbereiche – Ziele, Aufgaben, Habits, Fitness, Learning und Finanzen – mit Activity-Tracking und Analytics-Dashboard.
+Direkt zu finden ohne jegliches Setup läuft über Google Cloud unter https://overvu-frontend-163257944718.europe-west3.run.app
 
 ## Tech Stack
 
